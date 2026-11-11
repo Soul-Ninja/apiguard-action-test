@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info: {title: Notes test API, version: "1.0"}
+security:
+  - bearer: []
+components:
+  securitySchemes:
+    bearer: {type: http, scheme: bearer}
+  schemas:
+    Note:
+      type: object
+      properties:
+        id: {type: string}
+        owner_id: {type: string}
+        owner_email: {type: string}
+        text: {type: string}
+paths:
+  /login:
+    post:
+      operationId: login
+      security: []
+      requestBody:
+        content:
+          application/json:
+            schema: {type: object, properties: {username: {type: string}, password: {type: string}}}
+      responses:
+        "200": {description: token}
+  /notes:
+    post:
+      operationId: createNote
+      requestBody:
+        content:
+          application/json:
+            schema: {type: object, properties: {text: {type: string}}}
+      responses:
+        "201":
+          description: created
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Note"}
+  /notes/{note_id}:
+    get:
+      operationId: getNote
+      parameters:
+        - {name: note_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200":
+          description: the note
+          content:
+            application/json:
+              schema: {$ref: "#/components/schemas/Note"}

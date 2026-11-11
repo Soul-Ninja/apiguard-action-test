@@ -1,0 +1,14 @@
+# APIGuard target profile for the test API (see https://github.com/Soul-Ninja/APIGuard)
+base_url: "http://127.0.0.1:8000"
+spec_path: "openapi.yaml"
+login:
+  path: "/login"
+  body_template: {username: "{username}", password: "{password}"}
+  token_path: "token"
+  user_id_path: "user_id"
+identities:
+  - {name: user_a, username: "alice", password: "${ALICE_PASSWORD}"}
+  - {name: user_b, username: "bob", password: "${BOB_PASSWORD}"}
+resources:
+  notes:
+    body: {text: "hello from alice"}
