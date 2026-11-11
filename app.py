@@ -46,8 +46,8 @@ def create_note(body: NoteIn, authorization: Optional[str] = Header(None)):
 
 @app.get("/notes/{note_id}")
 def get_note(note_id: str, authorization: Optional[str] = Header(None)):
-    current_user(authorization)  # BUG: logged in is checked, ownership is not
+    user = current_user(authorization)
     note = NOTES.get(note_id)
-    if not note:
+    if not note or note["owner_id"] != user:  # fixed: only the owner can read a note
         raise HTTPException(404, "not found")
     return note
